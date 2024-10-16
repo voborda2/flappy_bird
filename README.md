@@ -1,1 +1,0 @@
-Pokus o Flappy bird hru hhh muhahahaha
