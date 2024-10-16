@@ -1,21 +1,23 @@
 #include <SFML/Graphics.hpp>
 
-int main()
-{
-    auto window = sf::RenderWindow({1920u, 1080u}, "CMake SFML Project");
-    window.setFramerateLimit(144);
+int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Flappy Bird");
 
-    while (window.isOpen())
-    {
-        for (auto event = sf::Event(); window.pollEvent(event);)
-        {
+    // Načtení textur, inicializace proměnných
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
-            {
                 window.close();
-            }
         }
 
+        // Logika hry (gravitace, kolize, pohyb)
+
         window.clear();
+        // Vykreslení ptáčka, pozadí, překážek
         window.display();
     }
+
+    return 0;
 }
