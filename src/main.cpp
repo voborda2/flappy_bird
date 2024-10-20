@@ -9,9 +9,9 @@ int main() {
 
     // Načtení textur
     sf::Texture birdTexture, backgroundTexture, pipeTexture;
-    birdTexture.loadFromFile("C:/Users/David/OneDrive/Plocha/Skola/Magisterske_studium/PIA/Flappy_bird/flappy_bird-2/assets/bird3.png");
-    backgroundTexture.loadFromFile("C:/Users/David/OneDrive/Plocha/Skola/Magisterske_studium/PIA/Flappy_bird/flappy_bird-2/assets/background2.png");
-    pipeTexture.loadFromFile("C:/Users/David/OneDrive/Plocha/Skola/Magisterske_studium/PIA/Flappy_bird/flappy_bird-2/assets/pipe1.png");
+    birdTexture.loadFromFile("C:/Users/marek/Desktop/skola/7_semestr/PIA/flappy/flappy_bird/assets/bird3.png");
+    backgroundTexture.loadFromFile("C:/Users/marek/Desktop/skola/7_semestr/PIA/flappy/flappy_bird/assets/background2.png");
+    pipeTexture.loadFromFile("C:/Users/marek/Desktop/skola/7_semestr/PIA/flappy/flappy_bird/assets/pipe1.png");
 
     // Sprity
     sf::Sprite birdSprite(birdTexture);
@@ -45,10 +45,11 @@ int main() {
     // Proměnná pro skóre
     int score =0;
     int bestScore = 0; 
+    int attemptCount = 1; // Proměnná pro počítání pokusů
 
     // Pismo a text pro skore
     sf::Font font;
-    font.loadFromFile("C:/Users/David/OneDrive/Plocha/Skola/Magisterske_studium/PIA/Flappy_bird/flappy_bird-2/assets/arial.ttf");
+    font.loadFromFile("C:/Users/marek/Desktop/skola/7_semestr/PIA/flappy/flappy_bird/assets/arial.ttf");
     sf::Text scoreText;
     scoreText.setFont(font);
     scoreText.setCharacterSize(40);
@@ -61,6 +62,13 @@ int main() {
     bestScoreText.setCharacterSize(40);
     bestScoreText.setFillColor(sf::Color::Yellow);
     bestScoreText.setPosition(250, 10);
+
+    // Text pro pokusy
+    sf::Text attemptText;
+    attemptText.setFont(font);
+    attemptText.setCharacterSize(40);
+    attemptText.setFillColor(sf::Color::Green);
+    attemptText.setPosition(500, 10); // Umístění pokusů vedle nejlepšího skóre
 
     // Tlačítko restartu
     sf::RectangleShape restartButton(sf::Vector2f(200, 50));
@@ -98,6 +106,7 @@ int main() {
                     birdVelocity = 0.0f;
                     score = 0;
                     gameOver = false;
+                    attemptCount++; // Zvýšení počtu pokusů
                 }
             }
         }
@@ -165,6 +174,7 @@ int main() {
             // Aktualizace skóre
             scoreText.setString("Score: " + std::to_string(score));
             bestScoreText.setString("Best: " + std::to_string(bestScore));
+            attemptText.setString("Attempts: " + std::to_string(attemptCount)); // Aktualizace pokusů
         }
 
         // Vykreslení
@@ -176,6 +186,7 @@ int main() {
         window.draw(birdSprite); // Vykreslení ptáčka
         window.draw(scoreText); // Vykreslení skóre
         window.draw(bestScoreText); // Vykreslení nejlepšího skóre
+        window.draw(attemptText); // Vykreslení počtu pokusů
 
         // Pokud hra skončila, zobrazíme tlačítko Restart
         if (gameOver) {
