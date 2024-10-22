@@ -2,16 +2,23 @@
 #include <cstdlib> // pro funkci rand()
 #include <vector>
 #include <iostream>
-#include <string> 
+#include <string>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 int main() {
+
+    std::filesystem::current_path("../../..");  // Přejde o tři úrovně výš z "build/bin/Debug" do kořene projektu, jinak nejde relativni path s Cmakem wtf
+    
+    std::cout << "Current path: " << std::filesystem::current_path() << std::endl;
+
     sf::RenderWindow window(sf::VideoMode(1280, 720), "Flappy Bird");
 
     // Načtení textur
     sf::Texture birdTexture, backgroundTexture, pipeTexture;
-    birdTexture.loadFromFile("C:/Users/marek/Desktop/skola/7_semestr/PIA/flappy/flappy_bird/assets/bird3.png");
-    backgroundTexture.loadFromFile("C:/Users/marek/Desktop/skola/7_semestr/PIA/flappy/flappy_bird/assets/background2.png");
-    pipeTexture.loadFromFile("C:/Users/marek/Desktop/skola/7_semestr/PIA/flappy/flappy_bird/assets/pipe1.png");
+    birdTexture.loadFromFile("assets/bird3.png");
+    backgroundTexture.loadFromFile("assets/background2.png");
+    pipeTexture.loadFromFile("assets/pipe1.png");
 
     // Sprity
     sf::Sprite birdSprite(birdTexture);
@@ -49,7 +56,7 @@ int main() {
 
     // Pismo a text pro skore
     sf::Font font;
-    font.loadFromFile("C:/Users/marek/Desktop/skola/7_semestr/PIA/flappy/flappy_bird/assets/arial.ttf");
+    font.loadFromFile("assets/arial.ttf");
     sf::Text scoreText;
     scoreText.setFont(font);
     scoreText.setCharacterSize(40);
