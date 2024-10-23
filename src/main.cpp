@@ -43,7 +43,7 @@ int main() {
     std::vector<sf::Sprite> pipes; // Vektor všech rour
     float pipeSpeed = 0.15f; // Rychlost pohybu rour z pravé strany doleva
     float speedIncreaseRate = 0.01f; // Míra zrychlení
-    int speedIncreaseScoreThreshold = 4; // Po každých 5 bodech zvýšíme rychlost
+    int speedIncreaseScoreThreshold = 3; // Po každých 3 bodech zvýšíme rychlost
     float maxPipeSpeed = 15.0f; // Maximální rychlost rour
     const float pipeGap = 300.0f; // Mezera, kterou ptáček může proletět
     float pipeSpawnInterval = 0.3f; // Počáteční rychlost pro generování rour
@@ -179,8 +179,6 @@ int main() {
                         if (pipeSpeed > maxPipeSpeed) {
                             pipeSpeed = maxPipeSpeed;
                         }
-
-                        std::cout << "Increased pipe speed: " << pipeSpeed << std::endl;
                     }
                 }
             }
