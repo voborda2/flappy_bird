@@ -49,6 +49,7 @@ int main() {
     float pipeSpawnInterval = 0.3f; // Počáteční rychlost pro generování rour
     const float beggpipeSpawnInterval = pipeSpawnInterval;
     const float beggpipeSpeed = pipeSpeed;
+    const float maxTiltAngle = 10.0f; // Maximální úhel natočení
     sf::Clock pipeSpawnClock; // Pro měření času mezi generováním rour
 
     // Proměnná pro ukončení hry
@@ -139,6 +140,13 @@ int main() {
                 }
             } else {
                 isMouseClicked = false; // Po uvolnění tlačítka může znovu kliknout
+            }
+
+            // Natočení ptáčka při skoku a pádu
+            if (birdVelocity < 0) {
+                birdSprite.setRotation(-maxTiltAngle); // Ptáček skáče, natočíme ho nahoru
+            } else if (birdVelocity > 0) {
+                birdSprite.setRotation(3*maxTiltAngle); // Ptáček padá, natočíme ho dolů
             }
 
             // Generování překážek
