@@ -4,11 +4,10 @@
 #include <iostream>
 #include <string>
 #include <filesystem>
-namespace fs = std::filesystem;
 
 int main() {
 
-    std::filesystem::current_path("../../..");  // Přejde o tři úrovně výš z "build/bin/Debug" do kořene projektu, jinak nejde relativni path s Cmakem wtf
+    std::filesystem::current_path("../../../..");  // Přejde o 4 úrovně výš z "build/bin/Debug" do kořene projektu, jinak nejde relativni path s CMakem a debuggem wtf
     
     std::cout << "Current path: " << std::filesystem::current_path() << std::endl;
 
@@ -37,13 +36,19 @@ int main() {
     // Proměnné pro logiku ptáčka
     float birdVelocity = 0.0f; // Rychlost ptáčka (y-směr)
     const float gravity = 0.0005f; // Gravitační konstanta
-    const float jumpStrength = -0.4f; // Síla skoku (při kliknutí)
+    const float jumpStrength = -0.3f; // Síla skoku (při kliknutí)
 
     // Proměnné pro překážky
     sf::Sprite pipeSprite(pipeTexture); // Jedna roura
     std::vector<sf::Sprite> pipes; // Vektor všech rour
-    const float pipeSpeed = 0.15f; // Rychlost pohybu rour z pravé strany doleva
+    float pipeSpeed = 0.15f; // Rychlost pohybu rour z pravé strany doleva
+    float speedIncreaseRate = 0.01f; // Míra zrychlení
+    int speedIncreaseScoreThreshold = 4; // Po každých 5 bodech zvýšíme rychlost
+    float maxPipeSpeed = 15.0f; // Maximální rychlost rour
     const float pipeGap = 300.0f; // Mezera, kterou ptáček může proletět
+    float pipeSpawnInterval = 0.3f; // Počáteční rychlost pro generování rour
+    const float beggpipeSpawnInterval = pipeSpawnInterval;
+    const float beggpipeSpeed = pipeSpeed;
     sf::Clock pipeSpawnClock; // Pro měření času mezi generováním rour
 
     // Proměnná pro ukončení hry
@@ -114,6 +119,8 @@ int main() {
                     score = 0;
                     gameOver = false;
                     attemptCount++; // Zvýšení počtu pokusů
+                    pipeSpawnInterval = beggpipeSpawnInterval;
+                    pipeSpeed = beggpipeSpeed;
                 }
             }
         }
@@ -135,11 +142,11 @@ int main() {
             }
 
             // Generování překážek
-            if (pipeSpawnClock.getElapsedTime().asSeconds() > 1.3) { // Každých 2 sekundy
+            if (pipeSpawnClock.getElapsedTime().asSeconds() > pipeSpawnInterval / pipeSpeed) {
                 pipeSpawnClock.restart();
 
                 // Náhodná výška mezery
-                float pipeOffset = rand() % 180 + 180;  // Náhodná hodnota mezi 180 a 360 pixely
+                float pipeOffset = rand() % 100 + 200;  // Náhodná hodnota mezi 180 a 360 pixely
 
                 // Vytvoření horní roury
                 sf::Sprite upperPipe(pipeSprite);
@@ -163,8 +170,21 @@ int main() {
                     score++;
                     passedPipes[i / 2] = true; // Označíme, že ptáček touto rourou prošel
                     std::cout << "Score: " << score << std::endl;
+
+                    // Zrychlení pohybu rour po každých 5 bodech
+                    if (score % speedIncreaseScoreThreshold == 0) {
+                        pipeSpeed += speedIncreaseRate;
+
+                        // Omezíme maximální rychlost
+                        if (pipeSpeed > maxPipeSpeed) {
+                            pipeSpeed = maxPipeSpeed;
+                        }
+
+                        std::cout << "Increased pipe speed: " << pipeSpeed << std::endl;
+                    }
                 }
             }
+
             // Konec hry, pokud ptáček narazí na rouru nebo na okraj okna
             for (auto &pipe : pipes) {
                 if (birdSprite.getGlobalBounds().intersects(pipe.getGlobalBounds()) ||
