@@ -6,5 +6,6 @@ Tento projekt je jednoduchá implementace hry Flappy Bird napsaná v C++ s využ
 
 # Poznámka ke spuštění projektu
 1)Ujistěte se, že složka assets (obsahující obrázky a fonty) je ve stejném adresáři jako CMakeLists.txt, protože hra očekává relativní cesty k těmto souborům.
+
 2)Pokud je problém s relativní cestou k assetům: Ujistěte se, že vaše pracovní složka je nastavena na kořen projektu. (...\Flappy_bird\) 
 
